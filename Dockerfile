@@ -4,5 +4,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 COPY source ./source
 COPY tests ./tests
+COPY inputs ./inputs
+COPY docs ./docs
 EXPOSE 8765
 CMD ["python3", "-m", "source.app", "--host", "0.0.0.0", "--port", "8765"]

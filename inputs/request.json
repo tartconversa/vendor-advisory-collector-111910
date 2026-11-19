@@ -1,0 +1,24 @@
+{
+  "assets": [
+    {
+      "id": "node-a",
+      "package": "runtime-old",
+      "version": "1.3.2",
+      "components": {
+        "engine": "1.3.2"
+      }
+    },
+    {
+      "id": "node-b",
+      "package": "workbench",
+      "version": "2.0.1",
+      "components": {
+        "engine": "2.0.1"
+      }
+    }
+  ],
+  "allowed_source_paths": [
+    "/vendor/",
+    "/mirror/"
+  ]
+}
