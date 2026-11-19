@@ -10,3 +10,7 @@ coverage/
 __pycache__/
 *.py[cod]
 .DS_Store
+
+# 本地演练来源状态
+source-state.json
+*.state.json
