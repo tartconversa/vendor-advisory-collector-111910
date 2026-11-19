@@ -9,3 +9,4 @@ class AdvisoryTest(SourceTest):
         self.control('mismatch');self.assertNotEqual(hashlib.sha256(self.request('/machine?id=ADV-A&revision=1')[1]).hexdigest(),sha)
         old=self.get('/vendor/index');self.control('index_shift');self.assertNotEqual(self.get('/vendor/index')['index_revision'],old['index_revision'])
         self.control('asset_upgrade');self.assertEqual(self.get('/assets')['assets'][0]['version'],'1.4.0');self.control('throttle');self.assertEqual(self.request('/vendor/index')[0],429)
+        self.control('replace');self.assertEqual(self.get('/machine?id=ADV-A&revision=3')['replaced_by'],'ADV-B')

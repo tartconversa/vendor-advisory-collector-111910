@@ -2,17 +2,18 @@
 from source.common import *
 
 class Site(Provider):
-    def initial(self):return {'revision':1,'index_version':1,'mismatch':False,'withdraw':False,'offline':False,'throttle':False,'assets_revision':1}
+    def initial(self):return {'revision':1,'index_version':1,'mismatch':False,'withdraw':False,'offline':False,'throttle':False,'assets_revision':1,'replacement':None}
     def event(self,d):
         e=d['event']
         if e=='exclude':self.state['revision']+=1
+        elif e=='replace':self.state['replacement']='ADV-B';self.state['revision']+=1
         elif e=='index_shift':self.state['index_version']+=1
         elif e in ['mismatch','withdraw','offline','throttle']:self.state[e]=True
         elif e=='asset_upgrade':self.state['assets_revision']+=1
         else:return Reply({'error':'unknown_event'},400)
         return {'ok':True}
     def advisory(self,revision):
-        return {'publisher':'vendor-a','id':'ADV-A','external_ids':['SYN-2026-01'],'revision':revision,'products':[{'id':'runtime','aliases':['runtime-old'],'component':'engine','affected':[{'introduced':'1.2.0','fixed':'1.4.0'}],'excluded':['1.3.2'] if revision>1 else [],'mitigation':'更新到受支持发行版'},{'id':'workbench','component':'engine','affected':[{'introduced':'2.0.0','fixed':'2.1.0'}],'excluded':[]}],'references':['/vendor/advisory?id=ADV-B'],'status':'withdrawn' if self.state['withdraw'] else 'published'}
+        return {'publisher':'vendor-a','id':'ADV-A','external_ids':['SYN-2026-01'],'revision':revision,'products':[{'id':'runtime','aliases':['runtime-old'],'component':'engine','affected':[{'introduced':'1.2.0','fixed':'1.4.0'}],'excluded':['1.3.2'] if revision>1 else [],'mitigation':'更新到受支持发行版'},{'id':'workbench','component':'engine','affected':[{'introduced':'2.0.0','fixed':'2.1.0'}],'excluded':[]}],'references':['/vendor/advisory?id=ADV-B'],'replaced_by':self.state['replacement'],'status':'withdrawn' if self.state['withdraw'] else ('replaced' if self.state['replacement'] else 'published')}
     def get(self,p,q,h):
         s=self.state
         if p=='/':return web(page('厂商防御公告','<a href="/vendor/index">厂商索引</a><a href="/mirror/advisory?id=ADV-A">旧镜像</a><p>来源约定 /policy；资产 /assets。</p>'))
