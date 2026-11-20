@@ -14,3 +14,7 @@ __pycache__/
 # 本地演练来源状态
 source-state.json
 *.state.json
+
+# 采集客户端运行数据（SQLite 原件库等）
+var/
+*.collector.db
